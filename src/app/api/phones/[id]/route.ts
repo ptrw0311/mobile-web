@@ -7,7 +7,7 @@ import { getPhoneDetails } from '@/db/queries'
  * 取得手機詳細資訊
  */
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
