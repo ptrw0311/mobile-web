@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
 import { getPhoneDetails } from '@/db/queries'
 
 /**
@@ -6,12 +7,12 @@ import { getPhoneDetails } from '@/db/queries'
  * 取得手機詳細資訊
  */
 export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const resolvedParams = await params
-    const phoneId = parseInt(resolvedParams.id)
+    const params = await context.params
+    const phoneId = parseInt(params.id)
 
     if (isNaN(phoneId)) {
       return NextResponse.json(
