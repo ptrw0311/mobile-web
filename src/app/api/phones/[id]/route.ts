@@ -7,10 +7,11 @@ import { getPhoneDetails } from '@/db/queries'
  */
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const phoneId = parseInt(params.id)
+    const resolvedParams = await params
+    const phoneId = parseInt(resolvedParams.id)
 
     if (isNaN(phoneId)) {
       return NextResponse.json(
