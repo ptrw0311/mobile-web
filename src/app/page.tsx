@@ -15,14 +15,14 @@ interface Phone {
 
 const brands = ['Apple', 'Samsung', 'Google', 'OnePlus', 'Xiaomi', 'ASUS', '其他']
 
-// 為每個品牌映射到 Unsplash 圖片
-const brandImageMap: { [key: string]: string } = {
-  Apple: 'https://images.unsplash.com/photo-1592286927505-1def25115558?w=500&h=500&fit=crop&q=80',
-  Samsung: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500&h=500&fit=crop&q=80',
-  Google: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500&h=500&fit=crop&q=80',
-  OnePlus: 'https://images.unsplash.com/photo-1511240992697-4f88f8c7c1a8?w=500&h=500&fit=crop&q=80',
-  Xiaomi: 'https://images.unsplash.com/photo-1511707267537-b85faf00021e?w=500&h=500&fit=crop&q=80',
-  ASUS: 'https://images.unsplash.com/photo-1511707267537-b85faf00021e?w=500&h=500&fit=crop&q=80',
+// 為每個品牌映射到特定顏色漸變
+const brandGradientMap: { [key: string]: string } = {
+  Apple: 'from-gray-800 to-gray-600',
+  Samsung: 'from-blue-600 to-blue-400',
+  Google: 'from-blue-400 to-red-500',
+  OnePlus: 'from-red-600 to-orange-500',
+  Xiaomi: 'from-orange-500 to-yellow-400',
+  ASUS: 'from-cyan-500 to-blue-500',
 }
 
 export default function Home() {
@@ -111,13 +111,9 @@ export default function Home() {
                 href={`/phone/${phone.id}`}
                 className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
               >
-                <div className="aspect-square relative bg-gray-100 overflow-hidden group">
-                  <img
-                    src={brandImageMap[phone.brand] || 'https://images.unsplash.com/photo-1511707267537-b85faf00021e?w=500&h=500&fit=crop&q=80'}
-                    alt={phone.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                <div className={`aspect-square relative bg-gradient-to-br ${brandGradientMap[phone.brand] || 'from-gray-400 to-gray-300'} overflow-hidden group flex flex-col items-center justify-center`}>
+                  <div className="text-white/80 text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">📱</div>
+                  <p className="text-white/90 text-center font-semibold px-4 line-clamp-2 text-sm">{phone.name}</p>
                   {!selectedBrand && (
                     <div className="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
                       #{index + 1}
