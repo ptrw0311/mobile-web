@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface Phone {
   id: number
@@ -13,6 +14,16 @@ interface Phone {
 }
 
 const brands = ['Apple', 'Samsung', 'Google', 'OnePlus', 'Xiaomi', 'ASUS', '其他']
+
+// 為每個品牌映射到 Unsplash 圖片
+const brandImageMap: { [key: string]: string } = {
+  Apple: 'https://images.unsplash.com/photo-1592286927505-1def25115558?w=500&h=500&fit=crop&q=80',
+  Samsung: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500&h=500&fit=crop&q=80',
+  Google: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500&h=500&fit=crop&q=80',
+  OnePlus: 'https://images.unsplash.com/photo-1511240992697-4f88f8c7c1a8?w=500&h=500&fit=crop&q=80',
+  Xiaomi: 'https://images.unsplash.com/photo-1511707267537-b85faf00021e?w=500&h=500&fit=crop&q=80',
+  ASUS: 'https://images.unsplash.com/photo-1511707267537-b85faf00021e?w=500&h=500&fit=crop&q=80',
+}
 
 export default function Home() {
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null)
@@ -100,11 +111,13 @@ export default function Home() {
                 href={`/phone/${phone.id}`}
                 className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
               >
-                <div className="aspect-square relative bg-gradient-to-br from-gray-100 to-gray-300 flex flex-col items-center justify-center p-4">
-                  <div className="text-center">
-                    <div className="text-gray-500 text-sm mb-2">📱</div>
-                    <p className="text-gray-700 font-semibold text-sm line-clamp-3">{phone.name}</p>
-                  </div>
+                <div className="aspect-square relative bg-gray-100 overflow-hidden group">
+                  <img
+                    src={brandImageMap[phone.brand] || 'https://images.unsplash.com/photo-1511707267537-b85faf00021e?w=500&h=500&fit=crop&q=80'}
+                    alt={phone.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                   {!selectedBrand && (
                     <div className="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
                       #{index + 1}
