@@ -26,7 +26,9 @@
       "Bash(fi)",
       "Bash(npm run db:seed:*)",
       "mcp__Neon__run_sql_transaction",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(vercel logs:*)",
+      "Bash(curl:*)"
     ],
     "deny": [],
     "ask": []

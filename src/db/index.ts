@@ -1,7 +1,12 @@
-import { drizzle } from 'drizzle-orm/vercel-postgres'
-import { sql } from '@vercel/postgres'
+import postgres from 'postgres'
+import { drizzle } from 'drizzle-orm/postgres-js'
 
 /**
- * 資料庫連接 - 使用 Vercel Postgres (Neon)
+ * 資料庫連接 - 使用 Postgres.js
  */
-export const db = drizzle(sql)
+if (!process.env.POSTGRES_URL) {
+  throw new Error('POSTGRES_URL 環境變數未設定')
+}
+
+const queryClient = postgres(process.env.POSTGRES_URL)
+export const db = drizzle(queryClient)
