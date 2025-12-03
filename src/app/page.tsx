@@ -16,13 +16,13 @@ interface Phone {
 const brands = ['Apple', 'Samsung', 'Google', 'OnePlus', 'Xiaomi', 'ASUS', '其他']
 
 // 為每個品牌映射到特定顏色漸變
-const brandGradientMap: { [key: string]: string } = {
-  Apple: 'from-gray-800 to-gray-600',
-  Samsung: 'from-blue-600 to-blue-400',
-  Google: 'from-blue-400 to-red-500',
-  OnePlus: 'from-red-600 to-orange-500',
-  Xiaomi: 'from-orange-500 to-yellow-400',
-  ASUS: 'from-cyan-500 to-blue-500',
+const brandColorMap: { [key: string]: { from: string; to: string } } = {
+  Apple: { from: '#1f2937', to: '#4b5563' },
+  Samsung: { from: '#1e40af', to: '#60a5fa' },
+  Google: { from: '#60a5fa', to: '#ef4444' },
+  OnePlus: { from: '#dc2626', to: '#f97316' },
+  Xiaomi: { from: '#f97316', to: '#facc15' },
+  ASUS: { from: '#06b6d4', to: '#3b82f6' },
 }
 
 export default function Home() {
@@ -111,7 +111,12 @@ export default function Home() {
                 href={`/phone/${phone.id}`}
                 className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
               >
-                <div className={`aspect-square relative bg-gradient-to-br ${brandGradientMap[phone.brand] || 'from-gray-400 to-gray-300'} overflow-hidden group flex flex-col items-center justify-center`}>
+                <div
+                  className="aspect-square relative overflow-hidden group flex flex-col items-center justify-center"
+                  style={{
+                    background: `linear-gradient(to bottom right, ${brandColorMap[phone.brand]?.from || '#d3d4d6'}, ${brandColorMap[phone.brand]?.to || '#9ca3af'})`
+                  }}
+                >
                   <div className="text-white/80 text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">📱</div>
                   <p className="text-white/90 text-center font-semibold px-4 line-clamp-2 text-sm">{phone.name}</p>
                   {!selectedBrand && (
