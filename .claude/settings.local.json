@@ -28,7 +28,10 @@
       "mcp__Neon__run_sql_transaction",
       "Bash(npm run build:*)",
       "Bash(vercel logs:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_console_messages",
+      "mcp__playwright__browser_wait_for"
     ],
     "deny": [],
     "ask": []

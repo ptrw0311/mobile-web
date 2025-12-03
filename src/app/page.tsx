@@ -100,16 +100,11 @@ export default function Home() {
                 href={`/phone/${phone.id}`}
                 className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
               >
-                <div className="aspect-square relative bg-gray-200">
-                  <img
-                    src={phone.imageUrl}
-                    alt={phone.name}
-                    className="w-full h-full object-contain p-4"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement
-                      target.src = `https://via.placeholder.com/300x300?text=${encodeURIComponent(phone.name)}`
-                    }}
-                  />
+                <div className="aspect-square relative bg-gradient-to-br from-gray-100 to-gray-300 flex flex-col items-center justify-center p-4">
+                  <div className="text-center">
+                    <div className="text-gray-500 text-sm mb-2">📱</div>
+                    <p className="text-gray-700 font-semibold text-sm line-clamp-3">{phone.name}</p>
+                  </div>
                   {!selectedBrand && (
                     <div className="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
                       #{index + 1}
