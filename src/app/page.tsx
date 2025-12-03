@@ -1,6 +1,6 @@
 'use client'
 
-// 品牌顏色漸變卡片 v2
+// 品牌顏色漸變卡片 - 使用 inline styles
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
