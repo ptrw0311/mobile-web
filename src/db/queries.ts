@@ -1,6 +1,6 @@
 import { db } from './index'
 import { phones, brands, reviews } from './schema'
-import { eq, desc, limit } from 'drizzle-orm'
+import { eq, desc } from 'drizzle-orm'
 
 /**
  * 取得本月熱門手機 Top N
