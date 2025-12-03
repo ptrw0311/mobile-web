@@ -3,6 +3,7 @@
 // 品牌顏色漸變卡片 - 使用 inline styles
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { UserButton } from '@stackframe/stack'
 
 interface Phone {
   id: number
@@ -53,8 +54,13 @@ export default function Home() {
       {/* Header */}
       <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <h1 className="text-3xl font-bold text-gray-900">MobileWeb</h1>
-          <p className="text-gray-600">全台灣最完整的手機產品資訊和比較平台</p>
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">MobileWeb</h1>
+              <p className="text-gray-600">全台灣最完整的手機產品資訊和比較平台</p>
+            </div>
+            <UserButton />
+          </div>
         </div>
       </header>
 
