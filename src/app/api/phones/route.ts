@@ -19,10 +19,7 @@ export async function GET(request: NextRequest) {
       phones = await getTopPhones(20)
     }
 
-    return NextResponse.json({
-      success: true,
-      data: phones,
-    })
+    return NextResponse.json(phones)
   } catch (error) {
     console.error('API Error:', error)
     return NextResponse.json(

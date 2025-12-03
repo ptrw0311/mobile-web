@@ -10,7 +10,7 @@ export async function getTopPhones(count: number = 20) {
     .select({
       id: phones.id,
       name: phones.name,
-      brandName: brands.name,
+      brand: brands.name,
       sitePrice: phones.sitePrice,
       imageUrl: phones.imageUrl,
       popularity: phones.popularity,
@@ -30,6 +30,7 @@ export async function getPhonesByBrand(brandName: string) {
     .select({
       id: phones.id,
       name: phones.name,
+      brand: brands.name,
       sitePrice: phones.sitePrice,
       imageUrl: phones.imageUrl,
       popularity: phones.popularity,

@@ -1,49 +1,41 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 interface Phone {
-  id: string
+  id: number
   name: string
   brand: string
-  price: number
-  image: string
+  sitePrice: string
+  imageUrl: string
   popularity: number
 }
-
-// 暫時的模擬資料
-const mockPhones: Phone[] = [
-  {
-    id: '1',
-    name: 'iPhone 15 Pro Max',
-    brand: 'Apple',
-    price: 35990,
-    image: 'https://via.placeholder.com/300x300?text=iPhone+15+Pro',
-    popularity: 1,
-  },
-  {
-    id: '2',
-    name: 'Samsung Galaxy S24 Ultra',
-    brand: 'Samsung',
-    price: 31990,
-    image: 'https://via.placeholder.com/300x300?text=Galaxy+S24',
-    popularity: 2,
-  },
-  {
-    id: '3',
-    name: 'Google Pixel 8 Pro',
-    brand: 'Google',
-    price: 26990,
-    image: 'https://via.placeholder.com/300x300?text=Pixel+8+Pro',
-    popularity: 3,
-  },
-]
 
 const brands = ['Apple', 'Samsung', 'Google', 'OnePlus', 'Xiaomi', 'ASUS', '其他']
 
 export default function Home() {
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null)
+  const [phones, setPhones] = useState<Phone[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchPhones() {
+      try {
+        const url = selectedBrand
+          ? `/api/phones?brand=${encodeURIComponent(selectedBrand)}`
+          : '/api/phones'
+        const response = await fetch(url)
+        const data = await response.json()
+        setPhones(data)
+      } catch (error) {
+        console.error('載入手機資料失敗:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchPhones()
+  }, [selectedBrand])
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -88,82 +80,53 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {selectedBrand === null ? (
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-8">
-              本月熱門手機 Top 20
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {mockPhones.map((phone) => (
-                <Link
-                  key={phone.id}
-                  href={`/phone/${phone.id}`}
-                  className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
-                >
-                  <div className="aspect-square relative bg-gray-200">
-                    <img
-                      src={phone.image}
-                      alt={phone.name}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                      #{phone.popularity}
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {phone.name}
-                    </h3>
-                    <p className="text-gray-600 text-sm mb-3">{phone.brand}</p>
-                    <p className="text-2xl font-bold text-blue-600">
-                      ${phone.price.toLocaleString()}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-8">
+          {selectedBrand ? `${selectedBrand} 手機` : '本月熱門手機 Top 20'}
+        </h2>
+
+        {loading ? (
+          <div className="text-center py-12">
+            <p className="text-gray-600">載入中...</p>
           </div>
+        ) : phones.length === 0 ? (
+          <p className="text-gray-600 text-center py-12">
+            {selectedBrand ? `暫無 ${selectedBrand} 的手機資訊` : '暫無手機資訊'}
+          </p>
         ) : (
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-8">
-              {selectedBrand} 手機
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {mockPhones
-                .filter((phone) => phone.brand === selectedBrand)
-                .map((phone) => (
-                  <Link
-                    key={phone.id}
-                    href={`/phone/${phone.id}`}
-                    className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
-                  >
-                    <div className="aspect-square relative bg-gray-200">
-                      <img
-                        src={phone.image}
-                        alt={phone.name}
-                        className="w-full h-full object-cover"
-                      />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {phones.map((phone, index) => (
+              <Link
+                key={phone.id}
+                href={`/phone/${phone.id}`}
+                className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
+              >
+                <div className="aspect-square relative bg-gray-200">
+                  <img
+                    src={phone.imageUrl}
+                    alt={phone.name}
+                    className="w-full h-full object-contain p-4"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement
+                      target.src = `https://via.placeholder.com/300x300?text=${encodeURIComponent(phone.name)}`
+                    }}
+                  />
+                  {!selectedBrand && (
+                    <div className="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                      #{index + 1}
                     </div>
-                    <div className="p-4">
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        {phone.name}
-                      </h3>
-                      <p className="text-gray-600 text-sm mb-3">
-                        {phone.brand}
-                      </p>
-                      <p className="text-2xl font-bold text-blue-600">
-                        ${phone.price.toLocaleString()}
-                      </p>
-                    </div>
-                  </Link>
-                ))}
-            </div>
-            {mockPhones.filter((phone) => phone.brand === selectedBrand)
-              .length === 0 && (
-              <p className="text-gray-600 text-center py-12">
-                暫無 {selectedBrand} 的手機資訊
-              </p>
-            )}
+                  )}
+                </div>
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
+                    {phone.name}
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-3">{phone.brand}</p>
+                  <p className="text-2xl font-bold text-blue-600">
+                    ${parseFloat(phone.sitePrice).toLocaleString()}
+                  </p>
+                </div>
+              </Link>
+            ))}
           </div>
         )}
       </main>
